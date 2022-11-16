@@ -2,26 +2,22 @@
 
 # AS=tasm -m @..\asmlib.cfg
 # AS=jwasmd -mt @asmlib ... so we just hardcode the asmlib/ for includes  
-AS=jwasmd -mt 
+AS=jwasm -mt 
 # CC=tcc
 # CFLAGS        = -IC:\TC\INCLUDE -LC:\TC\LIB -f -c -w -ms -a- -k- -N- -d -O -O2
 # CFLAGS=-IC:\TC\INCLUDE -LC:\TC\LIB -N -w -a- -f- -f87- -ms -r-
-LINKEXE=tlink /x
-LINKCOM=tlink /x /t
+LINKEXE=wlink system dos
+LINKCOM=wlink format dos com
 
-RM=del
+RM=rm -f
 
 
 # Rules to build files #################################################
 
 # .c.obj:
 # 	$(CC) $(CFLAGS) $*
-.asm.obj:
-	$(AS) $*
-.obj.com:
-	$(LINKCOM) $*
-.obj.exe:
-	$(LINKEXE) $*
+.asm.o:
+	$(AS) $*.asm
 
 
 # Targets ##############################################################
@@ -29,10 +25,12 @@ RM=del
 all: comtest.com protocol.com mousetst.com
 
 # com does not link...
-comtest.com: comtest.obj
+comtest.com: comtest.o
+	$(LINKCOM) file $*.o
 
 # com does not link...
-protocol.com: protocol.obj
+protocol.com: protocol.o
+	$(LINKCOM) file $*.o
 
 # mousetst.exe: mousetst.obj prf.obj
 # for com use -mt -lt
@@ -64,7 +62,9 @@ protocol.obj: protocol.asm ..\asmlib\asm.mac ..\asmlib\bios\area0.def \
 
 # Clean up #############################################################
 
-clean:
+clean
+	-$(RM) *.o
 	-$(RM) *.obj
+	-$(RM) *.com
 
 

@@ -44,8 +44,8 @@ doc/protocol.txt	f	2002-09-30T22:00:00Z
 doc/technote.txt	f	2002-10-01T00:00:00Z
 doc/uartnote.txt	f	2008-07-02T18:40:43Z
 doc/wheelapi.txt	f	2008-07-02T20:42:27Z
+utility/Makefile	f	2022-11-16T00:12:17Z
 utility/comtest.asm	f	2008-06-01T19:52:52Z
 utility/display.asm	f	2007-06-13T01:40:38Z
-utility/makefile	f	2008-06-01T19:51:51Z
 utility/mousetst.asm	f	2007-06-14T01:51:05Z
 utility/protocol.asm	f	2008-06-01T19:53:27Z
