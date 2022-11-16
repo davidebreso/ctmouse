@@ -143,12 +143,12 @@ IVT		dd 256 dup(?)	; Interrupt Vectors Table
 COM_base	dw ?,?,?,?	; 400: base IO address of serial ports
 LPT_base	dw ?,?,?	; 408: base IO address of parallel ports
 XBDA_seg	dw ?		; 40E: segment of eXtended BIOS data area
-HW_list		HWLIST ?	; 410: detected hardware/equipment list
+HW_list		HWLIST <>	; 410: detected hardware/equipment list
 		db ?
 basemem_K	dw ?		; 413: base memory size in Kb
 		dw ?
 
-KBD_flags	KBDFLAGS ?	; 417: keyboard status flags
+KBD_flags	KBDFLAGS <>	; 417: keyboard status flags
 		db ?		; 419: Alt-nnn keypad workspace
 KBD_bufhead@	dw ?		; 41A: pointer to next character in buffer
 KBD_buftail@	dw ?		; 41C: pointer to free space in buffer
@@ -185,13 +185,13 @@ KBD_buffer@	dw ?,?		; 480: keyboard buffer start/end+1 offsets in 40:0
 
 VIDEO_lastrow	db ?		; 484: last text row on screen (count from 0)
 VIDEO_hchar	dw ?		; 485: character height in scan lines/bytes
-VIDEO_control	VIDEOCONTROL ?	; 487: EGA/VGA control
-VIDEO_switches	VIDEOSWITCHES ?	; 488: EGA/VGA switches
-VGA_options	VGAOPTIONS ?	; 489: MCGA/VGA mode set option control
+VIDEO_control	VIDEOCONTROL <>	; 487: EGA/VGA control
+VIDEO_switches	VIDEOSWITCHES <>	; 488: EGA/VGA switches
+VGA_options	VGAOPTIONS <>	; 489: MCGA/VGA mode set option control
 VGA_DCC_index	db ?		; 48A: index into display combination code table
 		db 11 dup(?)
 
-KBD_status	KBDSTATUS ?	; 496: keyboard status flags
+KBD_status	KBDSTATUS <>	; 496: keyboard status flags
 
 TIMER_waitflag@	dd ?		; 498: pointer to user wait flag
 TIMER_waitmks	dd ?		; 49C: wait counter in mks

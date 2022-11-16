@@ -1,1 +1,6 @@
+*.o
+*.exe
+*.map
+*.com
+bin2exe
 bin/

@@ -185,7 +185,7 @@ endm
 
 ;лллллллллллллллллллллллллл SEGMENTS DEFINITION лллллллллллллллллллллллллл
 
-; .model use16 tiny
+.model tiny
 assume ss:nothing
 
 @TSRcode equ <DGROUP>
@@ -222,16 +222,16 @@ spritebuf	db	3*16 dup (?)	; copy of screen sprite in modes 4-6
 SaveArea = $
 RedefArea = $
 
-mickey8		POINT	?		; mickeys per 8 pixel ratios
+mickey8		POINT	<>		; mickeys per 8 pixel ratios
 ;;*doublespeed	dw	?		; double-speed threshold (mickeys/sec)
-senscoeff	POINT	?		; mickeys sensitivity, ~[1/3..3.0]*256
-sensval		POINT	?		; original 001A sensitivity values-1
+senscoeff	POINT	<>		; mickeys sensitivity, ~[1/3..3.0]*256
+sensval		POINT	<>		; original 001A sensitivity values-1
 startscan	dw	?		; screen mask/cursor start scanline
 endscan		dw	?		; cursor mask/cursor end scanline
 
 ;----- hotspot, screenmask and cursormask must follow as is -----
 
-hotspot		POINT	?		; cursor bitmap hot spot
+hotspot		POINT	<>		; cursor bitmap hot spot
 screenmask	db	2*16 dup (?)	; user defined screen mask
 cursormask	db	2*16 dup (?)	; user defined cursor mask
 nocursorcnt	db	?		; 0=cursor enabled, else hide counter
@@ -239,37 +239,37 @@ nocursorcnt	db	?		; 0=cursor enabled, else hide counter
 		even
 szDefArea = $ - RedefArea		; initialized by softreset_21
 
-rangemax	POINT	?		; horizontal/vertical range max
-upleft		POINT	?		; upper left of update region
-lowright	POINT	?		; lower right of update region
-pos		POINT	?		; virtual cursor position
-granpos		POINT	?		; granulated virtual cursor position
+rangemax	POINT	<>		; horizontal/vertical range max
+upleft		POINT	<>		; upper left of update region
+lowright	POINT	<>		; lower right of update region
+pos		POINT	<>		; virtual cursor position
+granpos		POINT	<>		; granulated virtual cursor position
 UIR@		dd	?		; user interrupt routine address
 
 		even
 ClearArea = $
 
-sensround	POINT	?		; rounding error in applying
+sensround	POINT	<>		; rounding error in applying
 					;  sensitivity for mickeys
-rounderr	POINT	?		; same in conversion mickeys to pixels
+rounderr	POINT	<>		; same in conversion mickeys to pixels
 		even
 szClearArea1 = $ - ClearArea		; cleared by setpos_04
 
-rangemin	POINT	?		; horizontal/vertical range min
+rangemin	POINT	<>		; horizontal/vertical range min
 		even
 szClearArea2 = $ - ClearArea		; cleared by setupvideo
 
 cursortype	db	?		; 0 - software, else hardware
 callmask	db	?		; user interrupt routine call mask
-mickeys		POINT	?		; mouse move since last access
+mickeys		POINT	<>		; mouse move since last access
 BUTTLASTSTATE	struc
   counter	dw	?
   lastrow	dw	?
   lastcol	dw	?
 BUTTLASTSTATE ends
-buttpress	BUTTLASTSTATE ?,?,?
-buttrelease	BUTTLASTSTATE ?,?,?
-wheel		BUTTLASTSTATE ?		; wheel counter since last access
+buttpress	BUTTLASTSTATE <>,<>,<>
+buttrelease	BUTTLASTSTATE <>,<>,<>
+wheel		BUTTLASTSTATE <>	; wheel counter since last access
 wheelUIR	db	?		; wheel counter for UIR
 		even
 szClearArea3 = $ - ClearArea		; cleared by softreset_21
@@ -3638,7 +3638,7 @@ OPT_Wheel	equ 1000000000b
 
 say		macro	stroff ; :vararg
 ;		MOVOFF_	di,<stroff>
-	mov di,offset stroff
+		mov	di,offset stroff
 		call	sayASCIIZ
 endm
 
@@ -3776,7 +3776,9 @@ real_start:	cld
 ;	end_
 @@mfb:
 		push	cx			; exit function and errorlevel
-		say	S_mousetype[si]
+;		say	S_mousetype[si]
+		mov	di, S_mousetype[si]
+		call	sayASCIIZ
 ;		say	bx
 		mov	di,bx
 		call    sayASCIIZ
