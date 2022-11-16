@@ -6,7 +6,7 @@
 ; ### MOUSETST does not come with ANY warranty...!
 
         org 100h        ; a com file
-
+        cpu 8086
 	; one could check if the int 33 vector is 0:0 first
 
 	xor bp,bp

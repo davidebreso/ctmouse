@@ -2,7 +2,7 @@
 
 # AS=tasm -m @..\asmlib.cfg
 # AS=jwasmd -mt @asmlib ... so we just hardcode the asmlib/ for includes  
-AS=jwasm -mt 
+AS=jwasm -mt -0
 # CC=tcc
 # CFLAGS        = -IC:\TC\INCLUDE -LC:\TC\LIB -f -c -w -ms -a- -k- -N- -d -O -O2
 # CFLAGS=-IC:\TC\INCLUDE -LC:\TC\LIB -N -w -a- -f- -f87- -ms -r-

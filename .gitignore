@@ -2,5 +2,6 @@
 *.exe
 *.map
 *.com
+ctmouse.msg
 bin2exe
 bin/
