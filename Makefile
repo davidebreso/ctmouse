@@ -1,44 +1,50 @@
+# Makefile to create CTMOUSE.EXE
+# tools used:
+# - GNU make
+# - JWasm v2.12pre
+# - gcc or clang
+# - bin2exe (built from source included in the repo)
+
+# As default, just the English version CTMOUSE.EXE is created.
+# To create all versions, enter "wmake alllang".
+
 # Macros for building, deleting ########################################
 
-# AS=tasm -m @asmlib.cfg
-# the following would require that you run SET ASMLIB=... first in a .bat:
-# AS=jwasmd -mt @asmlib ... so we just hardcode the asmlib/ for includes
 AS=jwasm
-LINKEXE=wlink
 GCC=gcc
-# using tlink /x /t would create COM but fails on jwasm made OBJ:
-# it says that there would be data defined below initial CS:IP...
-# *** LINKCOM=tlink /x /t
-
 RM=rm -f
+
+# Uncomment this to build for 8088/8086
+ASFLAGS=-c -bin -0
+# Uncomment this to build for 286 and better
+# ASFLAGS=-c -bin -2
 
 # Targets ##############################################################
 
 all: ctmouse.exe
 
-ctmouse.o: ctmouse.asm ctmouse.msg
-	$(AS) $*.asm
+alllang: ctm-en.exe ctm-br.exe ctm-de.exe ctm-es.exe ctm-fr.exe \
+	ctm-hu.exe ctm-it.exe ctm-lv.exe ctm-pl.exe ctm-pt.exe ctm-sk.exe
 
-ctmouse.exe: ctmouse.o bin2exe
-	$(LINKEXE) format dos com file $* option map
-	./bin2exe -s 512 ctmouse.com ctmouse.exe
-	rm -f ctmouse.com
+ctmouse.exe: ctm-en.msg ctmouse.asm bin2exe
+	$(AS) $(ASFLAGS) -D\?LANG=ctm-en -Foctmouse.bin ctmouse.asm
+	./bin2exe -s 512 ctmouse.bin ctmouse.exe
 
-ctmouse.o: ctmouse.asm ctmouse.msg asmlib/* asmlib/bios/* &
-		asmlib/convert/* asmlib/dos/* asmlib/hard/*
-
-ctmouse.msg: ctm-en.msg
-	cp ctm-en.msg ctmouse.msg
+%.exe: %.msg ctmouse.asm bin2exe
+	$(AS) $(ASFLAGS) -D\?LANG=$* -Fo$*.bin ctmouse.asm
+	./bin2exe -s 512 $*.bin $*.exe
 	
 bin2exe: bin2exe.c
-	$(GCC) bin2exe.c -o $*
+	$(GCC) bin2exe.c -o bin2exe
 
 # Clean up #############################################################
 
-clean
-	-$(RM) ctmouse.msg
+clean:
+	-$(RM) *.bin
 	-$(RM) *.o
+	
+distclean: clean
+	-$(RM) bin2exe
 	-$(RM) ctmouse.exe
 	-$(RM) ctm-*.exe
-# -$(RM) ctmouse.com
 

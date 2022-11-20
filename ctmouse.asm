@@ -46,10 +46,6 @@ USERIL           = 0		; include code for INT 10/Fn EGA functions
 
 ; %define PS2DEBUG 1		; print debug messages for PS2serv calls
 
-.8086
-;.286
-;.386
-
 ;------------------------------------------------------------------------
 
 include asmlib/asm.mac
@@ -129,13 +125,13 @@ nl		equ <13,10>
 eos		equ <0>
 
 POINT		struc
-  X		dw 0
-  Y		dw 0
+  X		dw ?
+  Y		dw ?
 POINT ends
 
 PS2serv		macro	serv:req,errlabel ; :vararg
 		mov	ax,serv
-%ifdef PS2DEBUG
+ifdef PS2DEBUG
 	push ax
 	mov al,'<'
 	int 29h
@@ -150,11 +146,11 @@ PS2serv		macro	serv:req,errlabel ; :vararg
 	add al,30h	; (func 7: es bx is pointer)
 	int 29h
 	pop ax
-%endif ; ifdef PS2DEBUG
+endif ; ifdef PS2DEBUG
 
 		int	15h
 
-%ifdef PS2DEBUG
+ifdef PS2DEBUG
 	pushf
 	push ax
 	mov al,20h	; space
@@ -174,7 +170,7 @@ PS2serv		macro	serv:req,errlabel ; :vararg
 	int 29h
 	pop ax
 	popf
-%endif ; ifdef PS2DEBUG
+endif ; ifdef PS2DEBUG
 
 	ifnb <errlabel>
 		jc	errlabel
@@ -268,9 +264,9 @@ BUTTLASTSTATE	struc
   lastrow	dw	?
   lastcol	dw	?
 BUTTLASTSTATE ends
-buttpress	BUTTLASTSTATE <>,<>,<>
-buttrelease	BUTTLASTSTATE <>,<>,<>
-wheel		BUTTLASTSTATE <>	; wheel counter since last access
+buttpress	BUTTLASTSTATE <>
+buttrelease	BUTTLASTSTATE <>
+wheel		BUTTLASTSTATE <>		; wheel counter since last access
 wheelUIR	db	?		; wheel counter for UIR
 		even
 szClearArea3 = $ - ClearArea		; cleared by softreset_21
@@ -322,7 +318,10 @@ oldIRQaddr	dd	?		; old IRQ handler address
 		even
 TSRdata		label byte
 
-; ERRIF (TSRdata lt TSRavail) "TSR uninitialized data area too small!"
+if (TSRdata lt TSRavail)
+	;echo TSR uninitialized data area too small ( No error ).
+	ORG TSRavail
+endif
 
 DefArea = $
 		POINT	<8,16>			; mickey8
@@ -3650,7 +3649,7 @@ TSRend		label byte
 .const
 
 ; messages segment virtual ; place at the end of current bsegment
-include ctmouse.msg
+%include ?LANG.msg
 ; messages ends
 
 S_mousetype	dw dataref:S_atPS2
@@ -4793,7 +4792,8 @@ commandline	proc
 	jnz @@clonz
 		mov	ax,[bx + offset cmOPTION.optmask]
 		or	[options],ax
-		call	[bx + offset cmOPTION.optproc@]
+;		call	[bx + offset cmOPTION.optproc@]
+		call	[bx + cmOPTION.optproc@]
 		j	commandline
 ;	  end_
 @@clonz:
