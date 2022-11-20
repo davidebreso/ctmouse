@@ -42,6 +42,8 @@ bin2exe: bin2exe.c
 clean:
 	-$(RM) *.bin
 	-$(RM) *.o
+	-$(RM) *.lst
+	-$(RM) *.map
 	
 distclean: clean
 	-$(RM) bin2exe

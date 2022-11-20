@@ -4913,8 +4913,12 @@ prepareTSR	proc
 						; ...copy process name
 		memcopy	8,dx,MCB,MCB:ownername,ax,MCB,MCB:ownername
 		POPSEG	ds,@data
-		inc	dx
+		inc	ax			; current PSP
+		inc	dx			; target PSP
 		mov	[MCB:ownerID],dx	; ...set owner to itself
+						; ...copy current PSP
+						; (this makes PC-DOS MEM happy)
+		memcopy	256,dx,PSP,PSP:DOS_exit,ax,PSP,PSP:DOS_exit
 
 		mov	ch,4Ch			; terminate, al=return code
 ;	end_ if
