@@ -6,6 +6,6 @@ This repository hosts a version of CuteMouse v2.1b4 converted to compile with Jw
 
 ## License
 
-* this repository as a whole is distributed under the terms of the GPL version 2. See the `copying` file for more details. 
+* CuteMouse ant this repository as a whole are distributed under the terms of the GPL version 2. See the `copying` file for more details. 
 * `bin2exe.c` is a modified version of the `bin2exe` utility included in [booterify](https://github.com/raphnet/booterify), developed by Raphaël Assenat and distributed under the MIT License.
 
