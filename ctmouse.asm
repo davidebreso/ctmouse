@@ -2716,7 +2716,7 @@ releasedata_06	proc
 		mov	[_ARG_AX_],ax
 		xor	ax,ax
 
-		inc	bx
+		inc	bx			; bx is {0, 1, 2, 3}
 		mov	si,TSRdref:wheel
 		jz	@@retlastpos		; jump if BX was -1
 		mov	si,cx
@@ -2729,7 +2729,8 @@ releasedata_06	proc
 ; ERRIF (6 ne size BUTTLASTSTATE) "BUTTLASTSTATE structure size changed!"
 		add	bx,bx
 		add	si,bx			; SI+BX=buttrelease
-		add	bx,bx			;  +button*size BUTTLASTSTATE
+		add	bx,bx			; bx is {0, 3, 6, 9}
+		add	bx,bx			;  +button*size BUTTLASTSTATE {0, 6, 12, 18}
 
 @@retlastpos:	xchg	[si + bx + offset BUTTLASTSTATE.counter],ax
 		mov	cx,[si+bx + offset BUTTLASTSTATE.lastcol]
