@@ -53,21 +53,21 @@ include asmlib/asm.mac
 include asmlib/code.def
 include asmlib/code.mac
 include asmlib/macro.mac
-include asmlib/BIOS/area0.def	; ** int11 flags and various 40:xx gfx info
+include asmlib/bios/area0.def	; ** int11 flags and various 40:xx gfx info
 ; HW_PS2	equ 4	; bit set in int 11h returned AX if PS/2 mouse present
 ; VIDEO_control VIDEO_switches VIDEO_width VIDEO_pageoff VIDEO_mode
 ; VIDEO_switches VIDSW_feature0 VIDSW_display VIDEO_ptrtable@
 ; VPARAM_SEQC VIDEO_paramtbl@ VIDEO_lastrow VIDEO_pageno
 include asmlib/convert/digit.mac	; ** only count2x uses digits in ASCII
 include asmlib/convert/count2x.mac	; ** only used as _word_hex for I/O port
-include asmlib/DOS/MCB.def	; ** small, used to set ownerid and name
-include asmlib/DOS/PSP.def	; ** only DOS_exit env_seg cmdline_len PSP_TSR used
-; include asmlib/DOS/file.mac	; was only used once - DOSCloseFile
-include asmlib/DOS/mem.mac
+include asmlib/dos/mcb.def	; ** small, used to set ownerid and name
+include asmlib/dos/psp.def	; ** only DOS_exit env_seg cmdline_len PSP_TSR used
+; include asmlib/dos/file.mac	; was only used once - DOSCloseFile
+include asmlib/dos/mem.mac
 ; include asmlib/hard/PIC8259A.def	; only PIC1_OCW2, PIC1_IMR const used:
 PIC1_OCW2	equ 20h
 PIC1_IMR	equ 21h
-include asmlib/hard/UART.def
+include asmlib/hard/uart.def
 
 USE_286		equ <(@CPU and 4)>
 USE_386		equ <(@CPU and 8)>
