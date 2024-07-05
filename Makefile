@@ -41,6 +41,7 @@ bin2exe: bin2exe.c
 
 clean:
 	-$(RM) *.bin
+	-$(RM) ctmouse.exe
 	-$(RM) *.o
 	-$(RM) *.lst
 	-$(RM) *.map
