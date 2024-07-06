@@ -64,7 +64,7 @@ include asmlib/dos/mcb.def	; ** small, used to set ownerid and name
 include asmlib/dos/psp.def	; ** only DOS_exit env_seg cmdline_len PSP_TSR used
 ; include asmlib/dos/file.mac	; was only used once - DOSCloseFile
 include asmlib/dos/mem.mac
-; include asmlib/hard/PIC8259A.def	; only PIC1_OCW2, PIC1_IMR const used:
+; include asmlib/hard/pic8259a.def	; only PIC1_OCW2, PIC1_IMR const used:
 PIC1_OCW2	equ 20h
 PIC1_IMR	equ 21h
 include asmlib/hard/uart.def

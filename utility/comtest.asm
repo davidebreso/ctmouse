@@ -46,13 +46,13 @@ dataref equ <offset @data>	; offset relative data group
 include ../asmlib/asm.mac
 ; include ../asmlib/hll.mac
 include ../asmlib/macro.mac
-include ../asmlib/BIOS/area0.def
+include ../asmlib/bios/area0.def
 include ../asmlib/convert/digit.mac
 include ../asmlib/convert/count2x.mac
-include ../asmlib/DOS/io.mac
-include ../asmlib/DOS/mem.mac
-include ../asmlib/hard/PIC8259A.def
-include ../asmlib/hard/UART.def
+include ../asmlib/dos/io.mac
+include ../asmlib/dos/mem.mac
+include ../asmlib/hard/pic8259a.def
+include ../asmlib/hard/uart.def
 
 nl		equ <13,10>
 eos		equ <'$'>
