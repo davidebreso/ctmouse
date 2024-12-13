@@ -264,8 +264,8 @@ BUTTLASTSTATE	struc
   lastrow	dw	?
   lastcol	dw	?
 BUTTLASTSTATE ends
-buttpress	BUTTLASTSTATE <>
-buttrelease	BUTTLASTSTATE <>
+buttpress	BUTTLASTSTATE <>,<>,<>
+buttrelease	BUTTLASTSTATE <>,<>,<>
 wheel		BUTTLASTSTATE <>		; wheel counter since last access
 wheelUIR	db	?		; wheel counter for UIR
 		even
@@ -2712,14 +2712,14 @@ pressdata_05	endp
 releasedata_06	proc
 		mov	cx,TSRdref:buttrelease-(size BUTTLASTSTATE)
 @retbuttstat::	mov	ah,byte ptr [wheel.counter]
-		mov	al,[buttstatus]
+		mov	al,[buttstatus]		;X={-1, 0, 1, 2}	-1-wheel, 0-left, 1-right, 2-middle button
 		mov	[_ARG_AX_],ax
 		xor	ax,ax
 
 		inc	bx			; bx is {0, 1, 2, 3}
 		mov	si,TSRdref:wheel
 		jz	@@retlastpos		; jump if BX was -1
-		mov	si,cx
+		mov	si,cx			; bx is {1, 2, 3}	1-left, 2-right, 3-middle button
 
 		xor	cx,cx
 		xor	dx,dx
@@ -2727,11 +2727,14 @@ releasedata_06	proc
 ;	if_ be
 	ja @@rlpa
 ; ERRIF (6 ne size BUTTLASTSTATE) "BUTTLASTSTATE structure size changed!"
-		add	bx,bx
-		add	si,bx			; SI+BX=buttrelease
-		add	bx,bx			; bx is {0, 3, 6, 9}
-		add	bx,bx			;  +button*size BUTTLASTSTATE {0, 6, 12, 18}
-
+		add	bx,bx			; BX= X*2
+		add	si,bx			; SI+BX=buttrelease		SI= X*2
+		add	bx,bx			; BX= X*4 
+; si + bx = (X*2) + (X*4) = X*6
+; Y = (X+1)*6 + buttrelease - 6 
+; 0-left   = buttrelease		;buttrelease	BUTTLASTSTATE <>,...,...		
+; 1-right  = buttrelease + 6		;buttrelease	BUTTLASTSTATE ...,<>,...
+; 2-middle = buttrelease + 12		;buttrelease	BUTTLASTSTATE ...,...,<>
 @@retlastpos:	xchg	[si + bx + offset BUTTLASTSTATE.counter],ax
 		mov	cx,[si+bx + offset BUTTLASTSTATE.lastcol]
 		mov	dx,[si+bx + offset BUTTLASTSTATE.lastrow]
